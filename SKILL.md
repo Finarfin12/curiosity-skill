@@ -83,7 +83,8 @@ Tabel definisi skor dan contoh dialog lengkap ada di [references/rubric-and-exam
 
 - `ringkas`: tampilkan tujuan, apa yang sudah terbukti (dengan bukti singkat per sumbu), apa yang belum diuji, kesalahan yang diperbaiki, saran ulangan dengan jeda (misalnya besok atau 3 hari lagi; jangan mengaku sudah memasang pengingat), dan satu pertanyaan penasaran berikutnya.
 - `simpan`: buat checkpoint Markdown plus JSON sesuai [schemas/learning-session.schema.json](schemas/learning-session.schema.json). Tanyakan tujuan penyimpanan (tampil di chat, file, Notion, Obsidian, dll.). Jangan menulis ke mana pun tanpa izin eksplisit di sesi itu; izin lama untuk alat lain tidak dihitung.
-- Melanjutkan sesi: bila user menempelkan checkpoint, baca statusnya, lewati yang sudah terbukti, dan mulai dari `next_step` atau sumbu yang `review_due`.
+- **Integrasi plugin Obsidian `curiosity-learning` (`cl_schema: 1`):** Bila user meminta membaca atau memperbarui catatan di vault Obsidian (`Learning/Inbox/` atau `Learning/Topics/` dengan frontmatter `cl_kind: learning`), gunakan kontrak frontmatter `cl_*` (`cl_state`, `cl_axes`, `cl_calibration`, `cl_review_due`), catat sumber bukti sumbu yang diuji AI sebagai `source: "observed_ai"`, dan tambahkan log non-destruktif menggunakan callout `[!cl-teach]`, `[!cl-probe]`, `[!cl-feedback]`, `[!cl-evidence]`, `[!cl-misconception]`, atau `[!cl-card]`. Jangan pernah mengubah catatan tanpa `cl_kind: learning` (seperti catatan Seedbed `type: idea`/`concept`).
+- Melanjutkan sesi: bila user menempelkan checkpoint atau membuka catatan `cl_kind: learning`, baca statusnya, lewati yang sudah terbukti, dan mulai dari `next_step` atau sumbu yang `review_due`.
 
 ## Batasan
 
