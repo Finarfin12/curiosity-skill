@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "curiosity-skill/learning-session.schema.json",
+  "title": "Curiosity Skill learning checkpoint",
+  "type": "object",
+  "required": ["schema_version", "session_id", "topic", "learning_goal", "learner_language", "current_state", "observations", "outstanding_gaps", "next_step", "created_at"],
+  "additionalProperties": false,
+  "$defs": {
+    "axisScore": {
+      "oneOf": [
+        { "type": "integer", "minimum": 0, "maximum": 3 },
+        { "const": "not_tested" }
+      ]
+    },
+    "axes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "recall": { "$ref": "#/$defs/axisScore" },
+        "explanation": { "$ref": "#/$defs/axisScore" },
+        "procedure": { "$ref": "#/$defs/axisScore" },
+        "transfer": { "$ref": "#/$defs/axisScore" },
+        "retention": { "$ref": "#/$defs/axisScore" }
+      },
+      "required": ["recall", "explanation", "procedure", "transfer", "retention"]
+    }
+  },
+  "properties": {
+    "schema_version": { "const": "0.2.0" },
+    "session_id": { "type": "string", "description": "Non-identifying id" },
+    "topic": { "type": "string" },
+    "learning_goal": { "type": "string" },
+    "curiosity_trigger": { "type": "string" },
+    "learner_language": { "type": "string" },
+    "current_state": {
+      "enum": ["unassessed", "exploring", "developing", "demonstrated_in_context", "review_due", "needs_reassessment"]
+    },
+    "axes": { "$ref": "#/$defs/axes" },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "status": { "enum": ["demonstrated", "missing", "not_tested"] }
+        }
+      }
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["prompt_goal", "strategy_used", "hint_level", "novelty", "axes_updated", "feedback"],
+        "additionalProperties": false,
+        "properties": {
+          "prompt_goal": { "type": "string" },
+          "question": { "type": "string" },
+          "response_excerpt": { "type": "string", "description": "Only when the learner explicitly allows it" },
+          "strategy_used": { "enum": ["teach", "feynman", "socratic", "devils_advocate", "evidence_evaluation", "application", "transfer", "review"] },
+          "strategy_reason": { "type": "string" },
+          "hint_level": { "type": "integer", "minimum": 0, "maximum": 3 },
+          "novelty": { "enum": ["same_as_example", "similar", "new_context"] },
+          "learner_attempt": { "type": "boolean" },
+          "axes_updated": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "recall": { "$ref": "#/$defs/axisScore" },
+              "explanation": { "$ref": "#/$defs/axisScore" },
+              "procedure": { "$ref": "#/$defs/axisScore" },
+              "transfer": { "$ref": "#/$defs/axisScore" },
+              "retention": { "$ref": "#/$defs/axisScore" }
+            }
+          },
+          "error_hypothesis": { "enum": ["missing_prerequisite", "representation_mismatch", "procedural_slip", "conceptual_mismatch", "retrieval_gap", "unknown"] },
+          "counterexample_result": { "type": "string" },
+          "evidence_source": { "type": "string" },
+          "feedback": { "type": "string" },
+          "exit_reason": { "type": "string" }
+        }
+      }
+    },
+    "self_reported_confidence": { "type": "integer", "minimum": 0, "maximum": 3 },
+    "outstanding_gaps": { "type": "array", "items": { "type": "string" } },
+    "next_step": { "type": "string" },
+    "next_curiosity": { "type": "string" },
+    "review_suggestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "after": { "type": "string", "description": "e.g. 1 day, 3 days" },
+        "focus": { "type": "string" },
+        "reminder_created": { "const": false }
+      }
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "verified"],
+        "additionalProperties": false,
+        "properties": {
+          "title": { "type": "string" },
+          "url": { "type": "string" },
+          "verified": { "type": "boolean" }
+        }
+      }
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  }
+}
